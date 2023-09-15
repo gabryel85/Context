@@ -1,21 +1,26 @@
-import { Todo } from '../../api/api.model';
 import { TodoInfo } from '../TodoInfo';
+import { useTodo } from '../../providers/TodoProvider';
+import { Todo } from '../../api/api.model';
 
-type TodoListProps = {
-  todos: Todo[];
-  onRemove: (todoId: number) => void;
-  onEdit: (todo: Todo) => void;
-};
+export const TodoList = () => {
+  const { todos, removeTodo, setEditedTodo } = useTodo();
 
-export const TodoList = ({ todos, onRemove, onEdit }: TodoListProps) => {
+  const handleRemove = (id: number) => () => {
+    removeTodo(id);
+  };
+
+  const handleEdit = (todo: Todo) => () => {
+    setEditedTodo(todo);
+  };
+
   return (
     <section className="TodoList">
       {todos.map((todo) => (
         <TodoInfo
           key={todo.id}
           todo={todo}
-          onRemove={() => onRemove(todo.id)}
-          onEdit={() => onEdit(todo)}
+          onRemove={handleRemove(todo.id)}
+          onEdit={handleEdit(todo)}
         />
       ))}
     </section>

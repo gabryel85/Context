@@ -3,15 +3,16 @@ import {
 } from 'react';
 import { Todo, User } from '../../api/api.model';
 import { apiService } from '../../api/api.service';
+import { useTodo } from '../../providers/TodoProvider';
 
 const users = apiService.fetchUsers();
 
 type TodoFormProps = {
-  handleSubmit: (todo: Todo) => void;
   defaultValue?: Todo;
 };
 
-export const TodoForm = ({ handleSubmit, defaultValue }: TodoFormProps) => {
+export const TodoForm = ({ defaultValue }: TodoFormProps) => {
+  const { addTodo, editTodo, editedTodo } = useTodo();
   const [selectedUser, setSetselectedUser] = useState<User | null>(
     defaultValue?.user || null,
   );
@@ -67,7 +68,12 @@ export const TodoForm = ({ handleSubmit, defaultValue }: TodoFormProps) => {
       title,
     };
 
-    handleSubmit(todo);
+    if (editedTodo) {
+      editTodo(todo);
+    } else {
+      addTodo(todo);
+    }
+
     setTitle('');
     setSetselectedUser(null);
   };
