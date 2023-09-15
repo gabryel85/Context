@@ -50,6 +50,7 @@ export const useTodo = (): TodoContextType => {
   return context;
 };
 
+// eslint-disable-next-line max-len
 export const withTodo = <P extends Record<string, unknown>> (Component: ComponentType<P>) => (props: P) => {
   const todoPros = useTodo();
 
